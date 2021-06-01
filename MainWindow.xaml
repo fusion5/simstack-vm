@@ -1,0 +1,78 @@
+﻿<Window
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Specialized="clr-namespace:System.Collections.Specialized;assembly=System.Collections.Specialized" 
+        xmlns:Collections="clr-namespace:System.Collections;assembly=System.Runtime" 
+        xmlns:local1="clr-namespace:SimStackVM"
+        xmlns:local="using:SimStackVM" 
+        x:Class="SimStackVM.MainWindow"
+        mc:Ignorable="d"
+        Title="Stack Machine Sim" Height="536" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <local1:DefinitionBodyToString x:Key="ConvDefBody" />
+        </Grid.Resources>
+        <StackPanel Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Register A:" TextWrapping="Wrap" Margin="10" />
+                <TextBlock x:Name="Register_A" Text="00" TextWrapping="Wrap" Margin="10" />
+                <TextBlock Text="Register B:" TextWrapping="Wrap" Margin="10" />
+                <TextBlock x:Name="Register_B" Text="00" TextWrapping="Wrap" Margin="10" />
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="10,0,0,0" >
+
+                <TextBlock Text="Stack:" TextWrapping="Wrap" Margin="0,0,10,0"/>
+                <ListBox x:Name="StackMemory" Width="100" Margin="0,0,10,0"/>
+                <StackPanel Orientation="Vertical"  Margin="0,0,10,0">
+                    <Button x:Name="Push1" Content="Push char 1"  Padding="10" CommandParameter="1" Click="StackPush" />
+                    <Button x:Name="Push0" Content="Push char 0"  Padding="10"  CommandParameter="0" Click="StackPush" />
+                    <Button x:Name="PopA" Content="Pop into Register A" Padding="10" Click="StackPopTo" CommandParameter="A"  />
+                    <Button x:Name="PopB" Content="Pop into Register B" Padding="10" Click="StackPopTo" CommandParameter="B" />
+                    <Button x:Name="Drop" Content="Drop char" Padding="10" Click="StackDrop" />
+                    <Button x:Name="Add" Content="Add" Padding="10" Click="StackAdd" />
+                </StackPanel>
+                <TextBlock Text="Dictionary:" TextWrapping="Wrap" Margin="0,0,10,0"/>
+                <ListBox x:Name="Dictionary" MinWidth="400" >
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Path=Key}" FontWeight="Bold" />
+                                <TextBlock Text=" = " />
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <Binding Path="Value">
+                                            <Binding.Converter>
+                                                <!-- local:DateFormatter /-->
+                                                <StaticResource ResourceKey="ConvDefBody" />
+                                            </Binding.Converter>
+                                        </Binding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </StackPanel>
+            <Label Content="Add new definition:"/>
+            <TextBox x:Name="NewTermName" Text="Term name" TextWrapping="Wrap" Width="120" HorizontalAlignment="Left"/>
+            <Label Content="New definition body:"/>
+            <ListBox x:Name="NewTermBody" MinWidth="400" MinHeight="100" Margin="0,0,10,10" DisplayMemberPath="" />
+            <StackPanel Orientation="Horizontal"  Margin="0,0,10,0" Height="27">
+                <Label Content="Append body term:" Margin="0,0,5,0"/>
+                <ComboBox x:Name="AddTerm" Width="120" Margin="0,0,10,0">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Path=Key}">
+                            </TextBlock>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Button x:Name="AddEntry" Content="Add" Padding="5" Click="AddBodyTerm"  Margin="0,0,10,0" />
+                <Button x:Name="AddDefinitionButton" Content="Add Definition" Click="AddDefinition" Padding="5"  />
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
